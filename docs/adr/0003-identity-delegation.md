@@ -14,7 +14,10 @@ than their audience, and no service may trust identity it did not verify.
 - **End-user identity**, when a workload acts for a user, is the user's own token in the
   `Bae6-End-User-Token` header. The service verifies it independently, and the workload must
   be bound to that application. The resulting `IdentityContext` has the user as subject and
-  the workload in `delegation`. (`bae6-authz` also accepts `Riz-End-User-Token` until its
+  the workload in `delegation`; its `issuer` and `audience` describe the user's token. The
+  user's and the workload's mappings (ADR-0002) must give the same `organizationId` and
+  `applicationId`, and the application must belong to that organization; otherwise 401.
+  A user token never moves a request into another tenant. (`bae6-authz` also accepts `Riz-End-User-Token` until its
   next major, for riz clients.)
 - **Token validation**, every service: see docs/style-guide.md#identity. The essentials:
   issuer from a configured allowlist; `aud` must equal this service's configured audience;

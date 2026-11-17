@@ -30,7 +30,8 @@ Every service validates inbound OIDC JWTs the same way:
 5. `exp` is in the future and `nbf`/`iat` not in the future, with ≤ 60 s clock skew.
 6. The subject (`sub`, or `azp`/`client_id` for workloads) is non-empty.
 7. `organizationId` and `applicationId` come from the service's trusted mapping (ADR-0002),
-   never from unconfigured claims.
+   never from unconfigured claims. With delegation, the user token and the workload token
+   must map to the same organization and application, or the request is rejected with 401.
 8. Scopes come from `scope` (space-separated) or `scp` (array).
 
 Then the service builds an `IdentityContext` and passes only that inward. Raw tokens are

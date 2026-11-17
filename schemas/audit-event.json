@@ -19,13 +19,15 @@
     "action": {
       "description": "Dotted verb, e.g. `models.rollback`, `servers.approve`, `budgets.reserve`.",
       "type": "string",
+      "maxLength": 128,
       "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)+$"
     },
     "outcome": { "enum": ["success", "denied", "failure"] },
     "requestId": { "$ref": "request-context.json#/$defs/requestId" },
     "detail": {
-      "description": "Before/after summary. Never tokens, credentials, tuples of other tenants or protected data.",
-      "type": "object"
+      "description": "Before/after summary. Never tokens, credentials, tuples of other tenants or protected data. Producers also cap its serialized size at 8 KiB.",
+      "type": "object",
+      "maxProperties": 32
     }
   }
 }
