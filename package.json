@@ -1,0 +1,19 @@
+{
+  "name": "bae6-contracts",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "license": "Apache-2.0",
+  "packageManager": "pnpm@10.19.0",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "lint": "redocly lint openapi/common.yaml",
+    "test": "node --test test/*.test.mjs",
+    "sums": "node scripts/sums.mjs > SHA256SUMS"
+  },
+  "devDependencies": {
+    "@redocly/cli": "2.72.1",
+    "ajv": "8.17.1",
+    "ajv-formats": "3.0.1"
+  }
+}

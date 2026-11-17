@@ -1,0 +1,10 @@
+{
+  "name": "does not retry a POST without an idempotency key",
+  "request": { "method": "POST", "path": "/v1/things", "body": {} },
+  "responses": [
+    { "status": 503, "body": { "code": "unavailable", "message": "Down.", "requestId": "req_3" } },
+    { "status": 200, "body": {} }
+  ],
+  "expectRequestCount": 1,
+  "expect": { "error": { "kind": "api", "status": 503, "code": "unavailable", "requestId": "req_3" } }
+}

@@ -1,0 +1,7 @@
+{
+  "name": "does not follow a redirect, so credentials go nowhere else",
+  "request": { "method": "GET", "path": "/v1/things" },
+  "responses": [{ "status": 302, "headers": { "location": "http://evil.invalid/v1/things" }, "body": "" }],
+  "expectRequestCount": 1,
+  "expect": { "error": { "kind": "api", "status": 302, "code": null } }
+}

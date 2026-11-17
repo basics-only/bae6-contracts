@@ -1,0 +1,45 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm lint
+      - run: pnpm test
+
+  compatibility:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      # Compare with the newest release tag; a PR labelled `breaking` is for a new major.
+      - id: base
+        run: echo "tag=$(git tag --list 'v*.*.*' --sort=-v:refname | head -n1)" >> "$GITHUB_OUTPUT"
+      - if: steps.base.outputs.tag != ''
+        run: git worktree add ../base "${{ steps.base.outputs.tag }}"
+      - if: steps.base.outputs.tag != '' && !contains(github.event.pull_request.labels.*.name, 'breaking')
+        run: >-
+          docker run --rm -v "$PWD/..:/w" -w /w tufin/oasdiff:v1.11.7
+          breaking base/test/compat-surface.yaml "$(basename "$PWD")/test/compat-surface.yaml" --fail-on ERR
+      - if: steps.base.outputs.tag != '' && !contains(github.event.pull_request.labels.*.name, 'breaking')
+        run: >-
+          docker run --rm -v "$PWD/..:/w" -w /w tufin/oasdiff:v1.11.7
+          breaking base/openapi/common.yaml "$(basename "$PWD")/openapi/common.yaml" --fail-on ERR

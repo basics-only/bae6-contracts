@@ -1,0 +1,7 @@
+{
+  "kind": "model",
+  "id": "bedrock:anthropic.claude-sonnet",
+  "operations": ["generate", "stream"],
+  "limits": { "maxInputTokens": 200000, "maxOutputTokens": 8192 },
+  "attributes": { "modalities": ["text", "image"], "tools": true }
+}

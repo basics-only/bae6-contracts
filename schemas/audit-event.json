@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/basics-only/bae6-contracts/schemas/audit-event.json",
+  "title": "AuditEvent",
+  "description": "An append-only record of a privileged action or authorization decision. Each product stores its own events; this is the shape they expose and export.",
+  "type": "object",
+  "required": ["id", "time", "organization", "actor", "action", "outcome", "detail"],
+  "properties": {
+    "id": { "type": "string", "minLength": 1, "maxLength": 128 },
+    "time": { "type": "string", "format": "date-time" },
+    "organization": { "$ref": "identity-context.json#/$defs/slug" },
+    "application": { "$ref": "identity-context.json#/$defs/slug" },
+    "actor": {
+      "description": "Verified subject that performed the action; for delegated calls, `<actor> for <subject>`.",
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 600
+    },
+    "action": {
+      "description": "Dotted verb, e.g. `models.rollback`, `servers.approve`, `budgets.reserve`.",
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)+$"
+    },
+    "outcome": { "enum": ["success", "denied", "failure"] },
+    "requestId": { "$ref": "request-context.json#/$defs/requestId" },
+    "detail": {
+      "description": "Before/after summary. Never tokens, credentials, tuples of other tenants or protected data.",
+      "type": "object"
+    }
+  }
+}

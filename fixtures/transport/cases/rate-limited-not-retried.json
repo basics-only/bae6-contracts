@@ -1,0 +1,14 @@
+{
+  "name": "surfaces retryAfterSeconds on 429 and leaves retrying to the caller",
+  "request": { "method": "GET", "path": "/v1/things" },
+  "responses": [
+    {
+      "status": 429,
+      "headers": { "retry-after": "5" },
+      "body": { "code": "rate_limited", "message": "Slow down.", "requestId": "req_7", "retryAfterSeconds": 5 }
+    },
+    { "status": 200, "body": {} }
+  ],
+  "expectRequestCount": 1,
+  "expect": { "error": { "kind": "api", "status": 429, "code": "rate_limited", "requestId": "req_7", "retryAfterSeconds": 5 } }
+}
