@@ -1,0 +1,1 @@
+{ "kind": "data_source", "id": "postgres", "operations": ["query"], "limits": { "maxRows": -1 } }

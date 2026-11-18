@@ -1,0 +1,9 @@
+{
+  "id": "42",
+  "time": "2026-11-17T12:00:00Z",
+  "organization": "acme",
+  "actor": "platform-admin",
+  "action": "models.rollback",
+  "outcome": "maybe",
+  "detail": {}
+}

@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/basics-only/bae6-contracts/schemas/identity-context.json",
+  "title": "IdentityContext",
+  "description": "The verified identity a service acts on. A service derives it from validated credentials (see docs/style-guide.md#identity); it is never accepted from a request body or an unverified header.",
+  "type": "object",
+  "required": ["subjectId", "subjectType", "organizationId", "applicationId", "issuer", "audience", "scopes"],
+  "additionalProperties": false,
+  "properties": {
+    "subjectId": {
+      "description": "The token's `sub` (end user) or workload client ID, unique within `issuer`.",
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "subjectType": { "enum": ["user", "workload"] },
+    "organizationId": { "$ref": "#/$defs/slug", "description": "Tenant. Mapped server-side from the trusted issuer/client binding, never from a caller claim the service did not configure." },
+    "applicationId": { "$ref": "#/$defs/slug" },
+    "issuer": { "type": "string", "format": "uri", "maxLength": 512 },
+    "audience": { "type": "string", "minLength": 1, "maxLength": 512 },
+    "scopes": {
+      "type": "array",
+      "maxItems": 100,
+      "uniqueItems": true,
+      "items": { "type": "string", "minLength": 1, "maxLength": 128 }
+    },
+    "delegation": {
+      "description": "Present when a workload acts for a verified end user: the subject is the user and `actor` is the workload. See ADR-0003.",
+      "type": "object",
+      "required": ["actorId", "actorIssuer"],
+      "additionalProperties": false,
+      "properties": {
+        "actorId": { "type": "string", "minLength": 1, "maxLength": 256 },
+        "actorIssuer": { "type": "string", "format": "uri", "maxLength": 512 }
+      }
+    }
+  },
+  "$defs": {
+    "slug": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]{0,62}$" }
+  }
+}

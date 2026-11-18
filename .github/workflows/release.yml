@@ -1,0 +1,23 @@
+name: release
+
+# Pushing vX.Y.Z publishes a GitHub release with SHA256SUMS for consumers to verify.
+on:
+  push:
+    tags: ["v[0-9]+.[0-9]+.[0-9]+"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      # A tag off main would publish unreviewed contracts.
+      - run: git merge-base --is-ancestor "$GITHUB_SHA" origin/main
+      - run: node scripts/sums.mjs | diff - SHA256SUMS
+      - run: gh release create "$GITHUB_REF_NAME" SHA256SUMS --verify-tag --generate-notes
+        env:
+          GH_TOKEN: ${{ github.token }}

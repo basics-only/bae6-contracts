@@ -1,0 +1,7 @@
+{
+  "name": "does not retry a dropped non-idempotent POST, which may have been applied",
+  "request": { "method": "POST", "path": "/v1/things", "body": {} },
+  "responses": [{ "drop": true }, { "status": 200, "body": {} }],
+  "expectRequestCount": 1,
+  "expect": { "error": { "kind": "connection" } }
+}

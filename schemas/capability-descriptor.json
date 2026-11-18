@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/basics-only/bae6-contracts/schemas/capability-descriptor.json",
+  "title": "CapabilityDescriptor",
+  "description": "What an adapter (model provider, data source, vector index) supports. A caller checks it before use; an operation not listed fails with `unsupported_operation`, never a silent fallback.",
+  "type": "object",
+  "required": ["kind", "id", "operations"],
+  "additionalProperties": false,
+  "properties": {
+    "kind": { "enum": ["model", "data_source", "vector_index", "tool"] },
+    "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9._:/-]{0,127}$" },
+    "operations": {
+      "type": "array",
+      "uniqueItems": true,
+      "maxItems": 64,
+      "items": { "type": "string", "pattern": "^[a-z][a-z0-9_]{0,63}$" }
+    },
+    "limits": {
+      "description": "Hard upper bounds the adapter enforces, e.g. `maxRows`, `maxInputTokens`, `maxBytes`.",
+      "type": "object",
+      "maxProperties": 32,
+      "propertyNames": { "maxLength": 64 },
+      "additionalProperties": { "type": "integer", "minimum": 0 }
+    },
+    "attributes": {
+      "description": "Kind-specific flags, e.g. modalities for a model.",
+      "type": "object",
+      "maxProperties": 32,
+      "propertyNames": { "maxLength": 64 },
+      "additionalProperties": {
+        "oneOf": [
+          { "type": "string", "maxLength": 256 },
+          { "type": "number" },
+          { "type": "boolean" },
+          { "type": "array", "maxItems": 32, "items": { "type": "string", "maxLength": 64 } }
+        ]
+      }
+    }
+  }
+}

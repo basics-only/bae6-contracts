@@ -1,0 +1,10 @@
+{
+  "name": "retries a GET after a 503 and returns the later success",
+  "request": { "method": "GET", "path": "/v1/things" },
+  "responses": [
+    { "status": 503, "body": { "code": "unavailable", "message": "Down.", "requestId": "req_2" } },
+    { "status": 200, "body": { "items": [] } }
+  ],
+  "expectRequestCount": 2,
+  "expect": { "result": { "items": [] } }
+}
