@@ -24,10 +24,10 @@ Baseline: 2026-11-17. Companion to `00-MASTER-PLAN.md`; records how the plans ar
 ## Phases and status
 | Phase | Repo(s) | Status |
 |---|---|---|
-| P0 Foundation | contracts, platform, scaffolds of all five | not started |
-| P1 Authorization | authz | not started |
-| P2 AI core | ai | not started |
-| P3 Context data | context | not started |
+| P0 Foundation | contracts, platform, scaffolds of all five | done: contracts v0.1.0 released; platform P0 merged to dev; all five repos have main+dev. |
+| P1 Authorization | authz | done: epic merged to dev (authz #9); riz #82–#84 ported as authz #1–#3 (RIZ-052/053/051); the riz PRs remain open. Not yet on main or tagged. |
+| P2 AI core | ai | done: epic merged to dev (ai #8), Bedrock/Vertex mocked, live smoke pending. Deferred scope: ai #9. |
+| P3 Context data | context | done: Postgres, Databricks (mocked), S3, data-api, SDKs and chart values merged to dev (context #6). Live Databricks pending. |
 | P4 Context embed | context | not started |
 | P5 Context MCP | context | not started |
 | P6 AI extensions | ai | not started |
