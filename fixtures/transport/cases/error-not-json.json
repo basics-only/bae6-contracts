@@ -1,0 +1,7 @@
+{
+  "name": "raises an api error with no code when an error body is not an envelope",
+  "request": { "method": "POST", "path": "/v1/things", "body": {} },
+  "responses": [{ "status": 502, "body": "Bad Gateway" }],
+  "expectRequestCount": 1,
+  "expect": { "error": { "kind": "api", "status": 502, "code": null } }
+}

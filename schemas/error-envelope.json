@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/basics-only/bae6-contracts/schemas/error-envelope.json",
+  "title": "ErrorEnvelope",
+  "description": "Body of every non-2xx response. Clients branch on `code`; an unrecognized code is treated as its HTTP status class. Unknown properties are ignored.",
+  "type": "object",
+  "required": ["code", "message", "requestId"],
+  "properties": {
+    "code": {
+      "description": "Stable machine code. Shared codes are listed in `examples`; products may add their own, documented in their OpenAPI.",
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]{0,63}$",
+      "examples": ["invalid_request", "unauthenticated", "forbidden", "not_found", "conflict", "payload_too_large", "rate_limited", "unavailable", "timeout", "internal"]
+    },
+    "message": {
+      "description": "Human-readable. Never contains tokens, credentials or protected data.",
+      "type": "string",
+      "maxLength": 1024
+    },
+    "requestId": { "$ref": "request-context.json#/$defs/requestId" },
+    "retryAfterSeconds": {
+      "description": "Set with `rate_limited` or `unavailable` when retrying later is safe.",
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 3600
+    }
+  }
+}

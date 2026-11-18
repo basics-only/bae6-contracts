@@ -1,0 +1,168 @@
+openapi: 3.1.0
+info:
+  title: bae6 common components
+  version: 0.1.0
+  description: |
+    Shared components every bae6 product API references. A product OpenAPI document
+    `$ref`s these from its vendored copy (see docs/consuming.md). Paths here are the
+    standard health endpoints every runtime exposes.
+  license:
+    name: Apache-2.0
+    identifier: Apache-2.0
+servers:
+  - url: http://localhost:8080
+security:
+  - bearer: []
+paths:
+  /health/live:
+    get:
+      operationId: live
+      summary: Process is running. Never checks dependencies.
+      security: []
+      responses:
+        "200":
+          $ref: "#/components/responses/HealthOk"
+  /health/ready:
+    get:
+      operationId: ready
+      summary: Hard dependencies reachable; safe to receive traffic.
+      security: []
+      responses:
+        "200":
+          $ref: "#/components/responses/HealthOk"
+        "503":
+          $ref: "#/components/responses/Unavailable"
+components:
+  securitySchemes:
+    bearer:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: OIDC access token. Validation rules are in docs/style-guide.md#identity.
+  parameters:
+    RequestId:
+      name: X-Request-Id
+      in: header
+      description: Optional. Reused if it matches the pattern, otherwise replaced; always echoed.
+      schema:
+        $ref: "../schemas/request-context.json#/$defs/requestId"
+    IdempotencyKey:
+      name: Idempotency-Key
+      in: header
+      description: Makes a non-idempotent POST safe to retry. Scoped to the verified caller.
+      schema:
+        type: string
+        pattern: "^[A-Za-z0-9._-]{8,128}$"
+    Cursor:
+      name: cursor
+      in: query
+      description: Opaque cursor from a previous page's `nextCursor`.
+      schema:
+        type: string
+        maxLength: 512
+    Limit:
+      name: limit
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 50
+  headers:
+    RequestId:
+      description: The request ID the service used.
+      schema:
+        $ref: "../schemas/request-context.json#/$defs/requestId"
+  schemas:
+    IdentityContext:
+      $ref: "../schemas/identity-context.json"
+    RequestContext:
+      $ref: "../schemas/request-context.json"
+    ErrorEnvelope:
+      $ref: "../schemas/error-envelope.json"
+    Page:
+      $ref: "../schemas/page.json"
+    AuditEvent:
+      $ref: "../schemas/audit-event.json"
+    CapabilityDescriptor:
+      $ref: "../schemas/capability-descriptor.json"
+    Health:
+      type: object
+      required: [status]
+      properties:
+        status:
+          type: string
+          enum: [ok]
+  responses:
+    HealthOk:
+      description: Healthy.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Health"
+    InvalidRequest:
+      description: Malformed or out-of-bounds input. Not retryable.
+      headers:
+        X-Request-Id:
+          $ref: "#/components/headers/RequestId"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorEnvelope"
+    Unauthenticated:
+      description: Missing, expired or unverifiable credentials.
+      headers:
+        X-Request-Id:
+          $ref: "#/components/headers/RequestId"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorEnvelope"
+    Forbidden:
+      description: Authenticated but not permitted for a resource in the caller's own tenant.
+      headers:
+        X-Request-Id:
+          $ref: "#/components/headers/RequestId"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorEnvelope"
+    NotFound:
+      description: Does not exist within the caller's tenant. A resource in another tenant gets this same response, so its existence is not disclosed (ADR-0002).
+      headers:
+        X-Request-Id:
+          $ref: "#/components/headers/RequestId"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorEnvelope"
+    PayloadTooLarge:
+      description: Body over the endpoint's documented limit.
+      headers:
+        X-Request-Id:
+          $ref: "#/components/headers/RequestId"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorEnvelope"
+    RateLimited:
+      description: Tenant or caller limit reached. Retry after `retryAfterSeconds`.
+      headers:
+        X-Request-Id:
+          $ref: "#/components/headers/RequestId"
+        Retry-After:
+          schema:
+            type: integer
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorEnvelope"
+    Unavailable:
+      description: A hard dependency is down. Protected operations fail closed with this, never allow.
+      headers:
+        X-Request-Id:
+          $ref: "#/components/headers/RequestId"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorEnvelope"

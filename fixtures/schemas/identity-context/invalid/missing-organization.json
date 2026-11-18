@@ -1,0 +1,8 @@
+{
+  "subjectId": "alice",
+  "subjectType": "user",
+  "applicationId": "crm",
+  "issuer": "https://login.acme.example",
+  "audience": "bae6-authz",
+  "scopes": []
+}

@@ -1,0 +1,11 @@
+{
+  "id": "41",
+  "time": "2026-11-17T12:00:00Z",
+  "organization": "acme",
+  "application": "crm",
+  "actor": "platform-admin",
+  "action": "models.rollback",
+  "outcome": "success",
+  "requestId": "req_01HZX8",
+  "detail": { "from": "01JA", "to": "01J9" }
+}

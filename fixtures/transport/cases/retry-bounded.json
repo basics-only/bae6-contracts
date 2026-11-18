@@ -1,0 +1,12 @@
+{
+  "name": "gives up after two retries",
+  "request": { "method": "GET", "path": "/v1/things" },
+  "responses": [
+    { "status": 503, "body": { "code": "unavailable", "message": "Down.", "requestId": "req_4" } },
+    { "status": 503, "body": { "code": "unavailable", "message": "Down.", "requestId": "req_5" } },
+    { "status": 503, "body": { "code": "unavailable", "message": "Down.", "requestId": "req_6" } },
+    { "status": 200, "body": {} }
+  ],
+  "expectRequestCount": 3,
+  "expect": { "error": { "kind": "api", "status": 503, "code": "unavailable", "requestId": "req_6" } }
+}

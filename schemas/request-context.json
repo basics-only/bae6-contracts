@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/basics-only/bae6-contracts/schemas/request-context.json",
+  "title": "RequestContext",
+  "description": "What a service carries for one request after authentication: the verified identity plus correlation. Built server-side; passed to injected adapters, never serialized from caller input.",
+  "type": "object",
+  "required": ["requestId", "identity"],
+  "additionalProperties": false,
+  "properties": {
+    "requestId": { "$ref": "#/$defs/requestId" },
+    "traceparent": {
+      "description": "W3C Trace Context `traceparent` header value.",
+      "type": "string",
+      "pattern": "^[0-9a-f]{2}-[0-9a-f]{32}-[0-9a-f]{16}-[0-9a-f]{2}$"
+    },
+    "identity": { "$ref": "identity-context.json" },
+    "deadline": {
+      "description": "Absolute time after which work for this request must stop.",
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "$defs": {
+    "requestId": {
+      "description": "Echoed in `X-Request-Id`. A caller-supplied value is reused only if it matches; otherwise the service mints one.",
+      "type": "string",
+      "pattern": "^[A-Za-z0-9._-]{1,64}$"
+    }
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "name": "returns the parsed JSON body of a 2xx response",
+  "request": { "method": "GET", "path": "/v1/things" },
+  "responses": [{ "status": 200, "body": { "items": [{ "id": "t1" }] } }],
+  "expectRequestCount": 1,
+  "expect": { "result": { "items": [{ "id": "t1" }] } }
+}

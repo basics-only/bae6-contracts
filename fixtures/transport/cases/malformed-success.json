@@ -1,0 +1,7 @@
+{
+  "name": "raises invalid_response when a 2xx body is not JSON",
+  "request": { "method": "GET", "path": "/v1/things" },
+  "responses": [{ "status": 200, "body": "<html>ok</html>" }],
+  "expectRequestCount": 1,
+  "expect": { "error": { "kind": "invalid_response" } }
+}

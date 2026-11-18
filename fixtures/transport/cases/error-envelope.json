@@ -1,0 +1,9 @@
+{
+  "name": "raises an api error carrying the envelope's code and request ID",
+  "request": { "method": "POST", "path": "/v1/things", "body": { "name": "x" } },
+  "responses": [
+    { "status": 403, "body": { "code": "forbidden", "message": "Not permitted.", "requestId": "req_1" } }
+  ],
+  "expectRequestCount": 1,
+  "expect": { "error": { "kind": "api", "status": 403, "code": "forbidden", "requestId": "req_1" } }
+}

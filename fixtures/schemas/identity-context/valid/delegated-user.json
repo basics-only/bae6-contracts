@@ -1,0 +1,10 @@
+{
+  "subjectId": "alice",
+  "subjectType": "user",
+  "organizationId": "acme",
+  "applicationId": "crm",
+  "issuer": "https://login.acme.example",
+  "audience": "bae6-authz",
+  "scopes": ["authz.check"],
+  "delegation": { "actorId": "crm-backend", "actorIssuer": "https://login.acme.example" }
+}

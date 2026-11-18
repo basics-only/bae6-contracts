@@ -1,0 +1,7 @@
+{
+  "name": "retries a dropped POST that carries an idempotency key, sending the same key",
+  "request": { "method": "POST", "path": "/v1/things", "body": {}, "idempotencyKey": "key-0001" },
+  "responses": [{ "drop": true }, { "status": 201, "body": { "id": "t1" } }],
+  "expectRequestCount": 2,
+  "expect": { "result": { "id": "t1" } }
+}

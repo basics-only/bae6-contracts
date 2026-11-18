@@ -1,0 +1,8 @@
+{
+  "name": "raises a timeout error when the server does not answer in time",
+  "client": { "timeoutMs": 100 },
+  "request": { "method": "POST", "path": "/v1/things", "body": {} },
+  "responses": [{ "status": 200, "delayMs": 1000, "body": {} }],
+  "expectRequestCount": 1,
+  "expect": { "error": { "kind": "timeout" } }
+}
