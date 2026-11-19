@@ -1,6 +1,6 @@
 # 0009 — Feedback and harness versioning
 
-Status: proposed
+Status: accepted
 Date: 2026-11-18
 
 ## Context
