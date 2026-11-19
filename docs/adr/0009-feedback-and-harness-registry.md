@@ -52,9 +52,11 @@ today would be a guess.
 - Cross-product views of feedback need an exported event or a read API; that is left to a
   later decision.
 - The gateway's `usage_events` already keys each call by `request_id` with its organization,
-  application, subject and model, so model feedback can validate against it. Unverified: who
-  mints that ID (server or caller) and whether the MCP registry and a future agent runtime
-  have an equivalent record. Lookups filter on organization in the same statement (0002), so
+  application, subject and model, so model feedback can validate against it. The gateway mints
+  that ID itself (`led_` plus a UUID), but the `x-request-id` header a caller sees may be
+  caller-supplied and is a different value, so feedback needs the ledger ID returned to the
+  caller; whether it already is, and whether the MCP registry and a future agent runtime have
+  an equivalent record, is unverified. Lookups filter on organization in the same statement (0002), so
   a guessed ID never confirms another tenant's request.
 - The harness manifest schema, canonical form and pointer-move authorization are open until
   P6 has a runner to load one.
