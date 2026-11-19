@@ -10,5 +10,6 @@
 | [0006](0006-mcp-discovery-execution.md) | MCP discovery versus execution |
 | [0007](0007-database-ownership.md) | Database instance and ownership |
 | [0008](0008-deployment-configuration.md) | Deployment configuration ownership |
+| [0009](0009-feedback-and-harness-registry.md) | Feedback and harness versioning |
 
 Product-internal decisions live in each product repo. Copy `0000-template.md` for a new one.
