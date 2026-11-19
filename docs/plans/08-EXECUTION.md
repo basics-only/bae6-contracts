@@ -4,7 +4,8 @@ Baseline: 2026-11-17. Companion to `00-MASTER-PLAN.md`; records how the plans ar
 ## Decisions (maintainer, 2026-11-17)
 - Five public repos under `github.com/basics-only`, checked out as siblings of this folder.
 - `bae6-authz` is `riz` (github.com/quentin-auster/riz) with full git history. History secret scan: 8 gitleaks hits, all dev fixture tokens (`dev-alice-token` etc.); no real secrets.
-- Each phase lands on a feature branch, reviewed by the `reviewer` agent, then a PR into `main`, merged when CI is green. `main` protected (PR + required checks).
+- Branches per AGENTS.md: `main` ← `dev` ← `epic/<phase>` ← `feature/*`; each epic is a GitHub milestone. Each epic is reviewed by the `reviewer` agent, then PR'd into `dev`.
+- The agent merges green, reviewed PRs and pushes release tags (maintainer allow rule, 2026-11-17). GitHub Actions does not run, so CI-equivalents run locally and PRs say so.
 - Cloud inference/query providers mocked; live Bedrock/Vertex/Databricks smoke tests stay **pending** until credentials exist.
 - Deferred until core gates pass (already optional in the plans): SharePoint, FAISS, MCP gateway, agent-worker/eval-worker, LangChain adapter, KEDA, Terraform EKS/GKE modules.
 - riz's SvelteKit console stays in history but is not released or deployed in v1 (master plan out-of-scope: admin portals).
@@ -28,7 +29,7 @@ Baseline: 2026-11-17. Companion to `00-MASTER-PLAN.md`; records how the plans ar
 | P1 Authorization | authz | done: epic merged to dev (authz #9); riz #82–#84 ported as authz #1–#3 (RIZ-052/053/051); the riz PRs remain open. Not yet on main or tagged. |
 | P2 AI core | ai | done: epic merged to dev (ai #8), Bedrock/Vertex mocked, live smoke pending. Deferred scope: ai #9. |
 | P3 Context data | context | done: Postgres, Databricks (mocked), S3, data-api, SDKs and chart values merged to dev (context #6). Live Databricks pending. |
-| P4 Context embed | context | not started |
-| P5 Context MCP | context | not started |
-| P6 AI extensions | ai | not started |
-| P7 Integration | platform | not started |
+| P4 Context embed | context | done: core, pgvector index, job queue, embed-api, deploy, SDKs and benchmark merged to dev (context #7–#14); p95 and storage benchmarks recorded there. |
+| P5 Context MCP | context | done: core, Postgres store, registry API, SDKs and deploy merged to dev (context #15–#20). Gateway deferred. Open follow-ons: DB errors as 503, byte-bounded lists, shared identity/http package. |
+| P6 AI extensions | ai | done: agents, evals and guardrails packages merged to dev (ai #11–#14). Workers and LangChain adapter deferred. Open follow-ons: agent message-history bound, receipts echo blocked input, guard-per-run budget, never run against a real model. |
+| P7 Integration | platform | done: podman compose stack, 5-test demo, load, footprint, rollback drills and security review in platform `docs/p7-gate.md`; stack pinned to ai v0.1.4 and context v0.1.2 (context v0.1.3 released, not yet re-verified in the stack; platform #2–#8). Review findings F1–F3 and S1–S4 addressed; residual S2/S4 gaps and the opt-in F2 cap are listed in `docs/p7-gate.md`; ai#19, context#21 and context#22 closed. Rollback drills and memory footprint not re-run on the hardened images. Mocks only; live smoke tests, authz and OpenFGA in the stack, and a kind/Helm run pending. |
