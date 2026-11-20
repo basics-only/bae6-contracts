@@ -1,6 +1,6 @@
 # 0014 — Automatic model routing
 
-Status: proposed (the classifier slice builds on 0015 and 0013, which must merge first)
+Status: accepted (the classifier slice builds on 0015 and 0013, which must merge first)
 Date: 2026-11-20
 
 ## Context
@@ -61,10 +61,9 @@ weaken tenant isolation, budgets or idempotency, and must not add unbounded work
 - **Visible in `/v1/models`.** A route is listed only to organizations that may use it, as
   its own kind of entry with no single provider, and with the largest limits among the
   candidates **that organization may use**, so it neither reveals nor promises what a model
-  it cannot see offers. This is a contract change with TS and Python SDK parity. A new entry
-  kind is not a compatible change under ADR 0001 for a strict client, so it ships as a
-  contracts minor version with a changelog note, and the SDKs ignore entry kinds they do
-  not know.
+  it cannot see offers. This is a contract change with TS and Python SDK parity. Under the
+  amended ADR 0001, clients tolerate an entry kind they do not know, so it ships as a
+  contracts minor version with a changelog note.
 - **Quality is measured, not assumed.** A classifier route is evaluated offline on a dataset
   with the `evals` package before it is enabled. No online learning, per-user stickiness or
   experiments in this ADR.
