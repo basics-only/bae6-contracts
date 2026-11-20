@@ -52,8 +52,10 @@ unavailable, which PR 34 refuses outside development.
 - Onboarding is Terraform plus a config file in Git; the console is for visibility until a
   config store is decided.
 - Rotation is the cloud's, not ours: no secret to rotate, and nothing for the console to leak.
-- No Terraform exists yet: `epic/p9-terraform` holds no `.tf` files. The module for the
-  roles, associations, databases and releases is the first piece to build.
+- The Terraform is in unmerged PRs, not on `epic/p9-terraform`: bae6-platform PR 13 creates
+  the Pod Identity association and a Bedrock invoke policy limited to exact model ARNs, and
+  PR 14 creates the Workload Identity binding and Vertex access. Merging them is the first
+  step. Neither has run against a real account.
 - Web-identity federation is not implemented, so until it lands a cluster outside EKS cannot
   call Bedrock from production. It needs the chart to project a service-account token with
   audience `sts.amazonaws.com` and set `AWS_ROLE_ARN` and `AWS_WEB_IDENTITY_TOKEN_FILE`, and
