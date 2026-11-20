@@ -1,6 +1,6 @@
 # 0015 — Hugging Face provider for open models
 
-Status: proposed (builds on 0013, which must merge first)
+Status: accepted (builds on 0013, which must merge first)
 Date: 2026-11-20
 
 ## Context
@@ -17,9 +17,9 @@ must be checked against it when the provider is written.
 - **One new provider, `huggingface`, in ai-core.** It implements `ModelProvider` over the
   OpenAI-compatible chat API with `fetch`: `chat` and `chat_stream`. `embed` is
   `UnsupportedOperation` until a separate decision. No new dependency. The provider enum in
-  the capability descriptor gains `huggingface`. ADR 0001 does not list a new enum value as
-  compatible, and a strict client would reject `/v1/models`, so this ships as a contracts
-  minor version with a changelog note, and the TS and Python SDKs accept unknown providers.
+  the capability descriptor gains `huggingface`. Under the amended ADR 0001, clients
+  tolerate unknown enum values, so this ships as a contracts minor version with a changelog
+  note, and the TS and Python SDKs accept unknown providers.
 - **It is not a cloud provider.** No AWS or GCP code is added. Open models in an
   organization's own cloud account are Bedrock or Vertex entries; Hugging Face dedicated
   endpoints can be placed in that account's cloud by the endpoint's owner.
