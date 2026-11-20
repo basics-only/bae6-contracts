@@ -35,7 +35,8 @@ neither.
     `domain`, `model`, `run`.
   - `GET /v1/usage/series`: the same measures per UTC day for one optional group filter.
   - `GET /v1/usage/distribution`: for each top percent of end users, the share of tokens or cost they used (a Lorenz curve), plus the user count; same filters and scope as the series, and no user ids.
-  - Both accept at most 93 days, return at most 100 groups with an explicit `truncated` flag,
+  - `GET /v1/usage/concentration`: per UTC month in the window, the share of tokens or cost used by the top 5%, 10% and 20% of end users, plus the user count. Months are calendar buckets, so a window of at most 93 days yields 3 or 4 points and the first and last are partial. Same scope as the distribution, and no user ids.
+  - The usage queries accept at most 93 days (a series can span 94 UTC days), return at most 100 groups with an explicit `truncated` flag,
     and `groupBy=run` takes at most 50 `runId` values. Cost is `numeric`, never a float.
 - **Scope.** Without a platform scope, every query is confined to the caller's own organization
   (0002) and `groupBy=organization` is refused. `ai:usage:platform` allows cross-organization
