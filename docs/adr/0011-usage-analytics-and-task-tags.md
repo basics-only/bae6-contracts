@@ -34,6 +34,7 @@ neither.
     trailing 1, 7 and 30 days ending at `to`. `groupBy` is one of `organization`, `taskType`,
     `domain`, `model`, `run`.
   - `GET /v1/usage/series`: the same measures per UTC day for one optional group filter.
+  - `GET /v1/usage/distribution`: for each top percent of end users, the share of tokens or cost they used (a Lorenz curve), plus the user count; same filters and scope as the series, and no user ids.
   - Both accept at most 93 days, return at most 100 groups with an explicit `truncated` flag,
     and `groupBy=run` takes at most 50 `runId` values. Cost is `numeric`, never a float.
 - **Scope.** Without a platform scope, every query is confined to the caller's own organization
