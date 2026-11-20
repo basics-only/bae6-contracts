@@ -17,6 +17,11 @@ unavailable, which PR 34 refuses outside development.
 ## Decision
 - **No cloud credential is ever stored by bae6.** Not in the model config, a ConfigMap,
   the database, or the console. The config names only regions, projects and model ids.
+- **One bounded exception: provider API tokens without a workload identity.** Hugging Face
+  (ADR 0015) has none. Its token is a bearer secret, not a cloud credential, and is held
+  only as a Kubernetes Secret (or `.env` in development) under a fixed variable-name
+  prefix, never in config, the database or the console, and never logged or forwarded.
+  Any further provider that needs a stored token needs its own ADR.
 - **Credentials come from the workload's cloud identity.**
   - AWS: EKS Pod Identity today. Next is web-identity federation
     (`AssumeRoleWithWebIdentity` with the pod's projected service-account token), which
@@ -40,7 +45,8 @@ unavailable, which PR 34 refuses outside development.
     console uses, once there is one.
 - **The console shows credential status, not credentials.** The gateway reports, per
   provider, the credential source (`pod-identity`, `web-identity`, `metadata`,
-  `development-static`) and the age of the last successful refresh. Neither liveness nor
+  `development-static`, and `token` for a stored provider token) and the age of the last
+  successful refresh (null for a token, which is not refreshed). Neither liveness nor
   readiness depends on it, so a provider outage does not drain or restart the fleet (no
   runtime dependency on the provider's control plane). The endpoint needs a contract change with TS and Python SDK
   parity, in its own PR.
