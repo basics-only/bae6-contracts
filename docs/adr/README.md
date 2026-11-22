@@ -11,6 +11,7 @@
 | [0007](0007-database-ownership.md) | Database instance and ownership |
 | [0008](0008-deployment-configuration.md) | Deployment configuration ownership |
 | [0009](0009-feedback-and-harness-registry.md) | Feedback and harness versioning |
+| [0010](0010-operator-console.md) | Operator console |
 | [0011](0011-usage-analytics-and-task-tags.md) | Usage analytics and task tags |
 | [0013](0013-cloud-credentials-and-onboarding.md) | Cloud credentials and onboarding |
 
