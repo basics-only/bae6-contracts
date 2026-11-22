@@ -11,5 +11,6 @@
 | [0007](0007-database-ownership.md) | Database instance and ownership |
 | [0008](0008-deployment-configuration.md) | Deployment configuration ownership |
 | [0009](0009-feedback-and-harness-registry.md) | Feedback and harness versioning |
+| [0011](0011-usage-analytics-and-task-tags.md) | Usage analytics and task tags |
 
 Product-internal decisions live in each product repo. Copy `0000-template.md` for a new one.
